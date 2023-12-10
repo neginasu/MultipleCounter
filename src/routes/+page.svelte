@@ -1,18 +1,26 @@
-<script>
+<script lang="ts">
 
-  let counters = [
+  type Counter = {
+    id: number;
+    name: string;
+    count: number;
+  };
+
+  
+  let counters: Counter[] = [
     { id: 1, name: 'new', count: 0 }
   ];
 
-  const addCounter = () => {
-    const newId = Math.max(...counters.map(c => c.id)) + 1;
+  const addCounter = ():void => {
+    const newId: number = Math.max(...counters.map(c => c.id)) + 1;
     counters = [...counters, { id: newId, name: 'new', count: 0 }];
   };
 
-  const increment = (id) => {
+  const increment = (id: number):void => {
     counters = counters.map(c => c.id === id ? { ...c, count: c.count + 1 } : c);
   };
-const decrement = (id) => {
+
+  const decrement = (id: number):void => {
     counters = counters.map(c => {
       if ( c.id === id && c.count > 0 ) {
         return { ...c, count: c.count - 1 };
@@ -21,15 +29,15 @@ const decrement = (id) => {
     });
   };
 
-  const reset = (id) => {
+  const reset = (id: number):void => {
     counters = counters.map(c => c.id === id ? { ...c, count: 0 } : c);
   };
 
-  const removeCounter = (id) => {
+  const removeCounter = (id: number):void => {
     counters = counters.filter(c => c.id !== id);
   };
 
-  const updateName = (id, newName) => {
+  const updateName = (id: number, newName: string):void => {
     counters = counters.map(c => c.id === id ? { ...c, name: newName } : c);
   };
 
