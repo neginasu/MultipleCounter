@@ -1,21 +1,65 @@
+<script>
+
+  let counters = [
+    { id: 1, name: 'new', count: 0 }
+  ];
+
+  const addCounter = () => {
+    const newId = Math.max(...counters.map(c => c.id)) + 1;
+    counters = [...counters, { id: newId, name: 'new', count: 0 }];
+  };
+
+  const increment = (id) => {
+    counters = counters.map(c => c.id === id ? { ...c, count: c.count + 1 } : c);
+  };
+const decrement = (id) => {
+    counters = counters.map(c => {
+      if ( c.id === id && c.count > 0 ) {
+        return { ...c, count: c.count - 1 };
+      }
+      return c;
+    });
+  };
+
+  const reset = (id) => {
+    counters = counters.map(c => c.id === id ? { ...c, count: 0 } : c);
+  };
+
+  const removeCounter = (id) => {
+    counters = counters.filter(c => c.id !== id);
+  };
+
+  const updateName = (id, newName) => {
+    counters = counters.map(c => c.id === id ? { ...c, name: newName } : c);
+  };
+
+  $: totalSum = counters.reduce((sum, counter) => sum + counter.count, 0);
+  
+</script>
+
 <div>
   <h1>Multiple Counter</h1>
   <div>
+    {#each counters as counter (counter.id)}
       <div class="counter">
         <input
           type="text"
-         />
-        <button class="increment">+</button>
-        <button class="decrement">-</button>
-        <button class="reset">0</button>
-        <button class="remove">x</button>
+          bind:value={counter.name}
+          on:input={(e) => updateName(counter.id, e.target.value)}
+        />
+        <span>{counter.count}</span>
+        <button on:click={() => increment(counter.id)} class="increment">+</button>
+        <button on:click={() => decrement(counter.id)} class="decrement">-</button>
+        <button on:click={() => reset(counter.id)} class="reset">0</button>
+        <button on:click={() => removeCounter(counter.id)} class="remove">x</button>
       </div>
-        <button class="newCounter">new counter</button>
+    {/each}
+        <button on:click={addCounter} class="newCounter">new counter</button>
     <div>
-      <strong>title list:</strong>
+      <strong>title list:</strong> {counters.map(c => c.name).join(', ')}
     </div>
     <div>
-      <strong>sum of count:</strong>
+      <strong>sum of count:</strong> {totalSum}
     </div>
   </div>
 </div>
