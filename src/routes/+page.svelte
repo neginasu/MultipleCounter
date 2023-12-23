@@ -11,8 +11,13 @@
     { id: 1, name: 'new', count: 0 }
   ];
 
-  const addCounter = ():void => {
-    const newId: number = Math.max(...counters.map(c => c.id)) + 1;
+  const addCounter = (): void => {
+    let newId: number;
+    if (counters.length === 0) {
+      newId = 1;
+    } else {
+      newId = Math.max(...counters.map(c => c.id)) + 1;
+    }
     counters = [...counters, { id: newId, name: 'new', count: 0 }];
   };
 
