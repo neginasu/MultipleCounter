@@ -11,8 +11,13 @@
     { id: 1, name: 'new', count: 0 }
   ];
 
-  const addCounter = ():void => {
-    const newId: number = Math.max(...counters.map(c => c.id)) + 1;
+  const addCounter = (): void => {
+    let newId: number;
+    if (counters.length === 0) {
+      newId = 1;
+    } else {
+      newId = Math.max(...counters.map(c => c.id)) + 1;
+    }
     counters = [...counters, { id: newId, name: 'new', count: 0 }];
   };
 
@@ -41,6 +46,12 @@
     counters = counters.map(c => c.id === id ? { ...c, name: newName } : c);
   };
 
+  const handleNameChange = (counterId, newName) => {
+    const index = counters.findIndex(c => c.id === counterId);
+    counters[index].name = newName;
+    counters = [...counters];
+  }
+
   $: totalSum = counters.reduce((sum, counter) => sum + counter.count, 0);
   
 </script>
@@ -52,8 +63,8 @@
       <div class="counter">
         <input
           type="text"
-          bind:value={counter.name}
-          on:input={(e) => updateName(counter.id, e.target.value)}
+          value={counter.name}
+          on:input={(e) => handleNameChange(counter.id, e.target.value)}
         />
         <span>{counter.count}</span>
         <button on:click={() => increment(counter.id)} class="increment">+</button>
