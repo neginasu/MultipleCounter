@@ -18,3 +18,5 @@
 
 ・main, develop, feature/Issues\_# のブランチ構成とする。
 ・それぞれのタスクはIssuesで管理し、Issuesの番号でブランチを切る。
+
+デプロイ先: https://main.d3kco9u0nz6wwp.amplifyapp.com/
